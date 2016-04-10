@@ -5,23 +5,34 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+
+/*
+Plotte plots numbers and outputs raw image data.
+For more information and license, visit https://github.com/sebskyo/plotte
+
+Exit codes:
+ 0 | All good
+-1 | Unknown error
+-2 | Wrong input
+-3 | I/O error
+-4 | Parsing error
+ */
 public class Main {
 	public static void main(String args[]) {
-		// Read numbers from input
-		Options opts;
+		// Parse arguments
+		Options opts = new Options(256, 256, false, false);
 		if(args.length > 0) {
 			try {
 				opts = CliHandle.parse(args);
 			}
 			catch (Exception e) {
-				System.out.println("An error occurred during cli option parsing, using defaults");
-				System.out.println(e);
-				opts = new Options(64, 64, false);
+				System.out.println("An error occurred during cli option parsing, printing stacktrace and aborting.");
+				e.printStackTrace();
+				System.exit(-4);
 			}
 		}
-		else {
-			opts = new Options(64, 64, false);
-		}
+
+		// Read data from stdin
 		Scanner sc = new Scanner(System.in);
 		ArrayList<Integer> arrl = new ArrayList<>();
 		boolean b = true;
@@ -31,7 +42,7 @@ public class Main {
 			}
 			catch (InputMismatchException e) {
 				e.printStackTrace();
-				System.exit(-1);
+				System.exit(-2);
 			}
 			catch (NoSuchElementException e) {
 				b = false;
@@ -41,8 +52,8 @@ public class Main {
 		for(int i = 0; i < arr.length; i++)
 			arr[i] = arrl.get(i);
 
-		// Create image
-		Plot p = new Plot(opts.getWidth(), opts.getHeight(), opts.getIsColored());
+		// Create, generate and output image
+		Plot p = new Plot(opts);
 		p.paint(arr);
 		p.write();
 	}

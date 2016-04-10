@@ -4,43 +4,57 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import java.util.Random;
 
 public class Plot extends BufferedImage {
 	private Graphics2D g;
-	private Random r;
-	private boolean isColored;
+	Options opts;
 
-	public Plot(int width, int height, boolean isColored) {
-		super(width, height, TYPE_INT_RGB);
-		this.isColored = isColored;
+	public Plot(Options opts) {
+		super(opts.getWidth(), opts.getHeight(), TYPE_INT_RGB);
+		this.opts = opts;
 		g = createGraphics();
-		r = new Random();
 	}
 
 	public void paint(int[] arr) {
-		float sep = (float) getWidth()/arr.length;
+		// Inverted colours
+		if(opts.getIsInverted()) {
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			g.setColor(Color.BLACK);
+		}
+
+		// Finding needed variables
+		float sep = (float) getWidth()/arr.length; // Used for column separation and width
 		int max = 0;
 		for(int i : arr)
 			max = i > max ? i : max;
+
+		// Column drawing loop
 		for(int i = 0; i < arr.length; i++) {
-			float p = (float)arr[i]/max;
-			if(isColored)
+			float p = (float)arr[i]/max; // Percentage of max, used for actual height in pixels
+			// For coloured images
+			if(opts.getIsColored())
 				g.setColor(new Color((int)Math.floor((float)arr[i]/max*255), 255-(int)Math.floor((float)arr[i]/max*255), 0));
+			// Actual drawing of a column
 			g.fillRect((int)(i * sep + sep/4), getHeight()-(int) (p * getHeight()), (int)(sep/2), (int) (p * getHeight()));
 		}
 	}
 
 	public void write() {
+		// Mostly error handling here
 		try {
-			ImageIO.write(this, "png", System.out);
+			ImageIO.write(this, "png", System.out); // Yes, it's that simple
 		}
 		catch (IOException e) {
-			System.out.println("An I/O error occurred: " + e);
+			System.out.println("An I/O error occurred, printing stacktrace and aborting: ");
+			e.printStackTrace();
+			System.exit(-3);
 		}
 		catch (Exception e) {
-			System.out.println("An unknown error occurred: " + e);
+			System.out.println("An unknown error occurred while writing image data, printing stacktrace and aborting: ");
+			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 }
