@@ -11,7 +11,6 @@ public class Options {
 		this.width = width;
 		this.height = height;
 		this.isColored = isColored;
-
 		this.isInverted = isInverted;
 	}
 

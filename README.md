@@ -3,16 +3,15 @@
 A plotting program implemented in Java.
 It's designed to be easily usable with UNIX pipes. For example, you can pipe in results from Sorte, a sorting program.
 ## How do I install it?
-Go to releases and download the jar. If you're on a UNIX system I recommend using these commands:
-```
-mv Plotte.jar plotte
-chmod +x plotte
-sudo mv plotte /usr/local/bin/plotte
-```
-else you can just run it the java way:
+Go to releases and download the jar, then run it:
 ```
 java -jar Plotte.jar
 ```
+If you're using unix, you *may* be able to just move the file to /usr/local/bin/ and be able to run it anywhere.
+
+Depending on your system, you might not be able to dotslash execute the jar. You can either change these settings or
+create bash script that runs the java command and forwards the given arguments. A quick google search can help you with
+either of those options.
 ## License
 > Plotte - a simple plotting program | Copyright (C) 2016  Sebastian Vikkelsø Elleholm
 >

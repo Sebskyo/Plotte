@@ -4,8 +4,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
 
+/*
+Plot class contains options and functions for painting and writing the image.
+An instance of Plot is an image, since the class extends BufferedImage,
+as such it functions as a sort of specialised image class.
+ */
 public class Plot extends BufferedImage {
 	private Graphics2D g;
 	Options opts;

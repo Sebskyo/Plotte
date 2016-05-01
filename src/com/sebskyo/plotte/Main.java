@@ -41,6 +41,7 @@ public class Main {
 				arrl.add(sc.nextInt());
 			}
 			catch (InputMismatchException e) {
+				System.out.println("Invalid input; aborting.");
 				e.printStackTrace();
 				System.exit(-2);
 			}
